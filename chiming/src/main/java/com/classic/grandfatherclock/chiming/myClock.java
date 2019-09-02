@@ -1,29 +1,17 @@
 import java.time.Clock;
+import java.time.Instant;
 import java.time.Duration;
 
-public class myClock extends Clock{
-    private int alarmHour;
-    private int alarmMinute;
-    private int alarmSecond;
+public class myClock {
+    private Instant alarmInstant;
     private boolean isAlarmOn;
 
+
     /**
-     * @param alarmHour the alarmHour to set
+     * @param alarmInstant the alarmInstant to set
      */
-    public void setAlarmHour(int aH) {
-        this.alarmHour = aH;
-    }
-    /**
-     * @param alarmMinute the alarmMinute to set
-     */
-    public void setAlarmMinute(int aM) {
-        this.alarmMinute = aM;
-    }
-    /**
-     * @param alarmSecond the alarmSecond to set
-     */
-    public void setAlarmSecond(int aS) {
-        this.alarmSecond = aS;
+    public void setAlarmInstant(Instant alarmInstant) {
+        this.alarmInstant = alarmInstant;
     }
     /**
      * @param isAlarmOn the isAlarmOn to set
@@ -31,52 +19,36 @@ public class myClock extends Clock{
     public void setAlarmOn(boolean b) {
         this.isAlarmOn = b;
     }
-    /**
-     * @return the alarmHour
+        /**
+     * @return the alarmInstant
      */
-    public int getAlarmHour() {
-        return alarmHour;
+    public Instant getAlarmInstant() {
+        return alarmInstant;
     }
-    /**
-     * @return the alarmMinute
-     */
-    public int getAlarmMinute() {
-        return alarmMinute;
-    }
-    /**
-     * @return the alarmSecond
-     */
-    public int getAlarmSecond() {
-        return alarmSecond;
-    }
-    public boolean getIsAlarmOn(){
+
+    public boolean getIsAlarmOn() {
         return isAlarmOn;
     }
-    public String getCurrentAlarmTime()
+    public String getCurrentAlarmTime(Clock c, Instant i)
     {
-        return "The current time is " + getHour() + ":" + getMinute() + ":" +
-            getSecond() + "\nThe alarm is set to " + getAlarmHour() + ":" +
-                getAlarmMinute() + ":" + getAlarmSecond() +
-                "\nThe Alarm is set to: "+getIsAlarmOn();
+        return "\nThe current time is " + c.instant() + 
+                "\nThe alarm is set to " + this.getAlarmInstant() +
+                "\nIs the Alarm On? "+ this.getIsAlarmOn();
     }
 
-    public myClock(int theHour, int theMinute, int theSecond, boolean b) {
+    public myClock(Instant i, boolean b) {
         super();
-        setAlarmHour(theHour);
-        setAlarmMinute(theMinute);
-        setAlarmSecond(theSecond);
-        setBoolean(b);
+        setAlarmInstant(i);
+        setAlarmOn(b);
     }
-
+    
     public static void main(String[] args) {
         System.out.println("I live!\n");
-
-        Clock c = Clock.systemUTC();  
+        System.out.println(); 
+        Clock c = Clock.systemUTC(); 
         Duration d = Duration.ofHours(5);  
-        Clock clock = Clock.offset(c, d);    
-        System.out.println(clock.instant()); 
-        myClock mc = myClock(0,0,0,TRUE);
-        
-        
+        Instant i = Clock.offset(c, d).instant();
+        myClock mc = new myClock(i, true);
+        System.out.print(mc.getCurrentAlarmTime(c,i));
     }
 }
